@@ -1,0 +1,87 @@
+function createPupilFiles(dataIndex)
+
+% read in csv and .mat files, save the pupil diameter into a new .mat file
+% also plot a control figure to show the recording did not miss any frames
+
+nFiles = size(dataIndex,1);
+
+for ii = 1:nFiles
+    pupCreated = 0;
+    % load behavior files
+    fn_beh = dir(fullfile(dataIndex.BehPath{ii},[dataIndex.LogFileName{ii}(1:end-4),'_beh.mat']));
+    load([fn_beh.folder,'/',fn_beh.name]);
+    
+    
+    
+    % get the pupillometry files
+    pupilFolder = dataIndex.LogFilePath{ii};
+    date = num2str(dataIndex.DateNumber(ii));
+    cd(pupilFolder)
+    dateStrCSV = ['*', date(1:6),'*.csv'];
+    dateStrMat = ['*', date(1:6),'*.mat'];
+    pupilCSV = dir(dateStrCSV);
+    pupilMat = dir(dateStrMat);
+    
+    
+    % check if only one file is found
+    
+        % check whether pup mat already exist
+    
+        fn = dir([fn_beh.folder,'/',pupilMat.name(1:end-9),'_pup.mat']);
+        if size(fn,1)>0
+            pupCreated = 1;
+        end
+        if pupCreated ~= 1
+            if length(pupilCSV) == 1
+                disp(['--- Detected: ' pupilCSV.name]);
+                % if only one match file found
+                
+                savematpath = fn_beh.folder;
+                savefigpath = [fn_beh.folder,'/', date(1:6)];
+                % load the csv file
+                [stackInfo, pupilData] = loadPupilFiles(pupilCSV, pupilMat);
+                
+                % check whether frames are equal in log file and
+                check_pupilTriggerTimes ( pupilData, stackInfo, trialData, savefigpath);
+                
+                % try isoutlier, looks good
+                pupil_temp = pupilData;
+                
+                % get rid of blinks by set outlier to NaN
+                TF = isoutlier(pupil_temp);
+                pupil_temp(TF) = NaN;
+                
+                % get running z-score in 10 min running windows
+                windowSize = 10*60*20;
+                dia_runningz = zeros(1, length(pupil_temp));
+                for jj = 1:windowSize:length(dia_runningz)
+                    if jj+windowSize-1<length(dia_runningz)
+                        dia_runningz(jj:jj+windowSize-1) = (pupil_temp(jj:jj+windowSize-1) - nanmean(pupil_temp(jj:jj+windowSize-1))) / nanstd(pupil_temp(jj:jj+windowSize-1));
+                    else
+                        dia_runningz(jj:length(dia_runningz)) = (pupil_temp(jj:length(dia_runningz)) - nanmean(pupil_temp(jj:length(dia_runningz)))) / nanstd(pupil_temp(jj:length(dia_runningz)));
+                    end
+                end
+                
+                pupil.dia = dia_runningz;
+                
+                % get frame time
+                frameTime = zeros(1, length(pupil.dia));
+                for kk = 1:length(pupil.dia)
+                    frameTime(kk) = trialData.triggerTimes(1)-stackInfo.delayTime + 0.05*(kk-1);
+                end
+                pupil.t = frameTime;
+                
+                save([savematpath,'/',pupilMat.name(1:end-9),'_pup.mat'],...
+                    'pupil');
+                
+                clearvars -except ii dirs dataIndex ;
+                
+            elseif length(pupilCSV) == 0
+                disp('None csv files found');
+            else
+                disp('Multiple csv files found');
+            end
+            
+        end
+    
+end
