@@ -85,7 +85,7 @@ for i = 1:nFile
         
         % 
         %save behavioral .mat file
-        save(fullfile(dataIndex.BehPath{i}, ['bandit_',dataIndex.LogFileName{i}(end-29:end-4),'_beh.mat'])',...
+        save(fullfile(dataIndex.BehPath{i}, ['bandit',dataIndex.LogFileName{i}(end-30:end-4),'_beh.mat'])',...
             'sessionData','trialData','logfileData','trials');
         
         behIndex.BehCreated(i) = 1;

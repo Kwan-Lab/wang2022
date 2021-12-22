@@ -404,3 +404,5 @@ saveas(gcf, ['frac_beta' int2str(x)],'svg');
 % print(gcf,'-dpng',['betaK-beta' int2str(x)]);    %png format
 % saveas(gcf,['betaK-beta' int2str(x)], 'fig');
 % saveas(gcf, ['betaK-beta' int2str(x)],'svg');
+
+close all

@@ -47,7 +47,7 @@ for i = 1:size(dataIndex,1)
         
         disp(['Processing file #' int2str(i) '.']);
         
-        load(fullfile(dataIndex.BehPath{i},['bandit_',dataIndex.LogFileName{i}(end-29:end-4),'_beh.mat']));
+        load(fullfile(dataIndex.BehPath{i},['bandit',dataIndex.LogFileName{i}(end-30:end-4),'_beh.mat']));
         
         [ trials ] = value_getTrialMasks( trialData );
         

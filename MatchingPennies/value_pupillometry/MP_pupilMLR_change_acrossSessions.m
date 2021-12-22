@@ -26,7 +26,7 @@ for ii = 1:nFiles
 
     if exist(saveRegName)
         load(saveRegName)
-        load(saveRegName_ITI)
+        
         % get subject mask
         subject_mask(end+1) = find(strcmp(animalList, dataIndex.Animal{ii}));
         

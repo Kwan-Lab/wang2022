@@ -126,13 +126,18 @@ bandit_pupilSimpleplots(dataIndex(dataIndex.pupil==1 & dataIndex.match==1,:));
 
 %% calculate pupil change/pupil response
 bandit_pupilChange(dataIndex(dataIndex.pupil==1& dataIndex.match==1,:), save_path_pupil);
-
+% for two-pupil analysis
+bandit_pupilChange_twopupil(dataIndex(dataIndex.pupil==1,:), save_path_pupil);
 
 %% running regression (choice and reward) on individual sessions
 % Figure 7A
 bandit_pupilMLR(dataIndex(dataIndex.pupil==1& dataIndex.match==1,:));
 bandit_pupilMLR_change_acrossSessions(dataIndex(dataIndex.pupil==1& dataIndex.match==1,:), save_path_pupil);
 
+% for two-pupil analysis, Figure 8B, C
+bandit_pupilMLRleft(dataIndex(dataIndex.pupilSide~=2,:));
+bandit_pupilMLRright(dataIndex(dataIndex.pupilSide~=1,:));
+bandit_pupilMLR_change_acrossSessions_twopupil(dataIndex(dataIndex.pupilSide==3,:), save_path_pupil);
 
 %% linear regression with latent variables
 % Figure 8B
@@ -284,10 +289,4 @@ bandit_behaviorPerAnimal(dataIndex(dataIndex.pupilSide==3,:),save_path);
 model_path = fullfile(root_path,'mat_models');
 save_path_pupil = fullfile(root_path,'summary','figs_summary_pupil');
 
-bandit_createtwoPupilFiles(dataIndex(dataIndex.pupil==1,:));
 bandit_pupilChange_twopupil(dataIndex(dataIndex.pupil==1,:), save_path_pupil);
-
-% for two-pupil analysis, Figure 8B, C
-bandit_pupilMLRleft(dataIndex(dataIndex.pupilSide==3,:));
-bandit_pupilMLRright(dataIndex(dataIndex.pupilSide==3,:));
-bandit_pupilMLR_change_acrossSessions_twopupil(dataIndex(dataIndex.pupilSide==3,:), save_path_pupil);

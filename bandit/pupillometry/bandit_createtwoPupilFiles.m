@@ -14,7 +14,7 @@ for ii = 1:nFiles
     % fn_beh =
     % dir(fullfile(dataIndex.BehPath{ii},['bandit',dataIndex.LogFileName{ii}(end-30:end-4),'_beh.mat']));%maybe
     % needed for Heather's data
-    fn_beh =dir(fullfile(dataIndex.BehPath{ii},['bandit_',dataIndex.LogFileName{ii}(end-29:end-4),'_beh.mat']));
+    fn_beh =dir(fullfile(dataIndex.BehPath{ii},['bandit',dataIndex.LogFileName{ii}(end-30:end-4),'_beh.mat']));
     
     
     load(fullfile(fn_beh.folder,fn_beh.name));

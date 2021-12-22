@@ -15,7 +15,7 @@ all_pval_future.left = [];all_pval_future.right = [];
 for ii = 1:nFiles
     savematpath = fullfile(dataIndex.BehPath{ii},'analysis-pupil');
     % load behavior files
-    fn_beh = dir(fullfile(dataIndex.BehPath{ii},['bandit_',dataIndex.LogFileName{ii}(end-29:end-4),'_beh.mat']));
+    fn_beh = dir(fullfile(dataIndex.BehPath{ii},['bandit',dataIndex.LogFileName{ii}(end-30:end-4),'_beh.mat']));
     
     saveRegNameleft = fullfile(savematpath,[fn_beh.name(1:end-7),'regCR_changeleft.mat']);
     saveRegNameright = fullfile(savematpath,[fn_beh.name(1:end-7),'regCR_changeright.mat']);

@@ -1,0 +1,31 @@
+#---INITIALIZATION FILE FOR AudPR 2AFC TASKS---
+#
+# HA: 2/5/18
+#---------------------------------------------
+
+#INITIALIZE BEHAVIORAL VARIABLES
+int manualFeed = 0;
+int leftLicks  = 0;
+int rightLicks = 0;
+
+int portcode_left  = 4; # Digital I/O # is log base2 of portcode 
+int portcode_right = 8;
+int portcode_trig  = 32;
+
+# For cal_REWARD.sce
+preset int	waterAmount_left      = 30;    # Valve open time in ms... 
+preset int	waterAmount_right     = 30;    # ...automatically applied to phase2_DISCRIM, etc.
+int	max_rewards           = 500;   # Number of reward given ( not total amount of water) - 2mL
+int   interpulse_interval   = 500; # Time between left and right pulses (Needed for accurate calibration - see NOTE in SCE file). 
+int	nRepeats              = 1; # Can be repeated (e.g. 100x) to estimate average water delivery/pulse.
+
+## For phase2_DISCRIM.sce 
+double	system_volume  = 0.1; # Fraction of max volume (range [0 1]).
+
+int	max_consecMiss    = 20; # Triggers end session.
+int	max_consecHits    = 3;
+int     max_consecStim  = 4;
+int	max_trials        = 1200; # Triggers end session in random ITI tasks; size of ITI vector. 
+int	ITI_min           = 5000; # Min and max ITI in ms; measured from last response to next sound cue.
+int	ITI_max           = 16000; # Min = duration_reward+duration_startTrial+c; endTrial_duration = EXP()+c truncated to max 
+double	EXP_lambda     = 0.25; # Rate constant for endTrial_duration = EXP() in seconds; mu is 1/lambda for PDF
