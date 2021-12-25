@@ -13,7 +13,7 @@ function MP_determineBehCriteria(dataIndex)
 
 nFiles = size(dataIndex,1);
 for ii = 1:nFiles
-    fullfilePath = [dataIndex.BehPath{ii}, '\', dataIndex.LogFileName{ii}(1:end-4),'_beh.mat'];
+    fullfilePath = fullfile(dataIndex.BehPath{ii},[dataIndex.LogFileName{ii}(1:end-4),'_beh.mat']);
     load(fullfilePath);
     
     trials = MP_getTrialMasks(trialData);
@@ -38,7 +38,7 @@ for ii = 1:nFiles
 %             'entro',...
 %             'stats');
     % save the figure for later check
-    saveFigPath = [dataIndex.BehPath{ii}, '\cut\'];
+    saveFigPath = fullfile(dataIndex.BehPath{ii},'cut');
     if ~exist(saveFigPath)
         mkdir(saveFigPath)
     end
